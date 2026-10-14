@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://c766fl78o0cjk"]
+
+[ext_resource type="PackedScene" uid="uid://co806t5p15df4" path="res://scenes/player.tscn" id="1_nnsk1"]
+[ext_resource type="PackedScene" uid="uid://dlgm38ulncgcb" path="res://platforme_mobile.tscn" id="2_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://ctjj02wsrl7ac" path="res://kill.tscn" id="3_4wyf3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f3sb7"]
+size = Vector2(600, 18)
+
+[node name="World" type="Node2D" unique_id=1075995839]
+
+[node name="Player" parent="." unique_id=234108435 instance=ExtResource("1_nnsk1")]
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=453924064]
+limit_bottom = 100
+limit_smoothed = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=307137244]
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D" unique_id=18097707]
+offset_left = -54.0
+offset_top = 5.0
+offset_right = 546.0
+offset_bottom = 23.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=500077407]
+position = Vector2(246, 14)
+shape = SubResource("RectangleShape2D_f3sb7")
+
+[node name="PlatformeMobile" parent="." unique_id=2057271244 instance=ExtResource("2_rwgxs")]
+position = Vector2(108, -35)
+
+[node name="kill" parent="." unique_id=1789796445 instance=ExtResource("3_4wyf3")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="kill" unique_id=878171062]

@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://dlgm38ulncgcb"]
+
+[ext_resource type="Texture2D" uid="uid://cpvia5a7lrl2g" path="res://assets/sprites/platforms.png" id="1_48cqg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_momd1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3vefv"]
+size = Vector2(130.5, 41)
+
+[sub_resource type="Animation" id="Animation_48cqg"]
+resource_name = "new_animation"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimationPlayer:root_node")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4afl7"]
+_data = {
+&"new_animation": SubResource("Animation_48cqg")
+}
+
+[node name="PlatformeMobile" type="Node2D" unique_id=2057271244]
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="." unique_id=326986102]
+position = Vector2(350, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=591494078]
+shape = SubResource("RectangleShape2D_momd1")
+one_way_collision = true
+
+[node name="Platforms" type="Sprite2D" parent="AnimatableBody2D" unique_id=646391154]
+position = Vector2(-349.99997, 0)
+scale = Vector2(3.78125, 3.9999998)
+texture = ExtResource("1_48cqg")
+region_enabled = true
+region_rect = Rect2(16, 0, 32, 9)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="AnimatableBody2D" unique_id=1239111942]
+position = Vector2(-348, 1)
+shape = SubResource("RectangleShape2D_3vefv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1127262682]
+libraries/ = SubResource("AnimationLibrary_4afl7")

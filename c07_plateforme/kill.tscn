@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ctjj02wsrl7ac"]
+
+[ext_resource type="Script" uid="uid://cvxdmy5fwfy7f" path="res://kill.gd" id="1_it5pd"]
+
+[node name="kill" type="Area2D" unique_id=1789796445]
+script = ExtResource("1_it5pd")
+
+[node name="Timer" type="Timer" parent="." unique_id=1920181052]
