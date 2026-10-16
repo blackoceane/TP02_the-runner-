@@ -1,7 +1,185 @@
 [gd_scene format=3 uid="uid://d4jlgthv4b3ux"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1141477015]
+[ext_resource type="Texture2D" uid="uid://dbrc3yobgvauh" path="res://art/ants_sprite_sheet/1/attack/ant_attack_1.png" id="1_42hdn"]
+[ext_resource type="Texture2D" uid="uid://cwy3bi8vip2gj" path="res://art/ants_sprite_sheet/1/attack/ant_attack_2.png" id="2_el37e"]
+[ext_resource type="Texture2D" uid="uid://bws5ckfakoe5g" path="res://art/ants_sprite_sheet/1/attack/ant_attack_3.png" id="3_inrnk"]
+[ext_resource type="Texture2D" uid="uid://1gues5lgguj0" path="res://art/ants_sprite_sheet/1/dead/ant_dead_1.png" id="4_wqsd8"]
+[ext_resource type="Texture2D" uid="uid://cc4pbh2jrsg75" path="res://art/ants_sprite_sheet/1/dead/ant_dead_2.png" id="5_ugk0l"]
+[ext_resource type="Texture2D" uid="uid://di2jsjm3ib380" path="res://art/ants_sprite_sheet/1/dead/ant_dead_3.png" id="6_eewtm"]
+[ext_resource type="Texture2D" uid="uid://cqvrxod15vci4" path="res://art/ants_sprite_sheet/1/idle/ant_idle_1.png" id="7_o6j3l"]
+[ext_resource type="Texture2D" uid="uid://dmqxstspuf5hq" path="res://art/ants_sprite_sheet/1/idle/ant_idle_2.png" id="8_diyyd"]
+[ext_resource type="Texture2D" uid="uid://cq8vclh5x1s7e" path="res://art/ants_sprite_sheet/1/idle/ant_idle_3.png" id="9_uduk5"]
+[ext_resource type="Texture2D" uid="uid://dl8ivxdjo4dxv" path="res://art/ants_sprite_sheet/1/idle/ant_idle_4.png" id="10_tyfdd"]
+[ext_resource type="Texture2D" uid="uid://bnkdfxo33jar5" path="res://art/ants_sprite_sheet/1/walk/ant_walk_1.png" id="11_bae6d"]
+[ext_resource type="Texture2D" uid="uid://1d6y7ib7nql5" path="res://art/ants_sprite_sheet/1/walk/ant_walk_2.png" id="12_mamov"]
+[ext_resource type="Texture2D" uid="uid://c155au7c0leoa" path="res://art/ants_sprite_sheet/1/walk/ant_walk_3.png" id="13_7oyl4"]
+[ext_resource type="Texture2D" uid="uid://c87jomopacpid" path="res://art/ants_sprite_sheet/1/ant_Sheet.png" id="14_u2kg2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_33wo8"]
+atlas = ExtResource("1_42hdn")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rsbhr"]
+atlas = ExtResource("2_el37e")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjxx7"]
+atlas = ExtResource("3_inrnk")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_605yl"]
+atlas = ExtResource("4_wqsd8")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7f82"]
+atlas = ExtResource("5_ugk0l")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y77s4"]
+atlas = ExtResource("6_eewtm")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r8tdc"]
+atlas = ExtResource("7_o6j3l")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_teyxv"]
+atlas = ExtResource("8_diyyd")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufs60"]
+atlas = ExtResource("9_uduk5")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m8ak6"]
+atlas = ExtResource("10_tyfdd")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xvfxd"]
+atlas = ExtResource("11_bae6d")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_abs25"]
+atlas = ExtResource("12_mamov")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4blw"]
+atlas = ExtResource("13_7oyl4")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nda51"]
+atlas = ExtResource("14_u2kg2")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ef4gn"]
+atlas = ExtResource("14_u2kg2")
+region = Rect2(192, 256, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jyxh6"]
+atlas = ExtResource("11_bae6d")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35mu4"]
+atlas = ExtResource("12_mamov")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ri7g2"]
+atlas = ExtResource("13_7oyl4")
+region = Rect2(0, 0, 96, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_225ex"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_33wo8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rsbhr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mjxx7")
+}],
+"loop": 1,
+"name": &"attack",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_605yl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q7f82")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y77s4")
+}],
+"loop": 1,
+"name": &"fall",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r8tdc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_teyxv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufs60")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m8ak6")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xvfxd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_abs25")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4blw")
+}],
+"loop": 1,
+"name": &"run",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nda51")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ef4gn")
+}],
+"loop": 1,
+"name": &"statut",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jyxh6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35mu4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ri7g2")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[node name="enemie1" type="CharacterBody2D" unique_id=1141477015]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1595795135]
+sprite_frames = SubResource("SpriteFrames_225ex")
+animation = &"statut"
+autoplay = "walk"
+frame_progress = 0.071570136
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=947653101]

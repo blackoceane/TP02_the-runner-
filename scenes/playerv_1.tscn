@@ -308,3 +308,7 @@ autoplay = "walk"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1481211670]
 position = Vector2(-9, 3)
 shape = SubResource("CapsuleShape2D_7rm7n")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1693478382]
+zoom = Vector2(2, 2)
+position_smoothing_enabled = true
