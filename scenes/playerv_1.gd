@@ -1,43 +1,71 @@
 extends CharacterBody2D # c est un heritage et non une bibliotheque 
 
-const SPEED = 200.0
-const JUMP_VELOCITY = -300.0
+const SPEED = 100.0
+const JUMP_VELOCITY = -400.0
 var munitions = 3
+var attaque_commencee = false # vrai pendant qu une attaque est en cours
+
+enum State { STATE_JUMPING, STATE_ATTACKING, STATE_RUNNING, STATE_FALLING  } # la liste des etats 
+
+var current_state : State = State.STATE_RUNNING # au début il court modele temple run 
+
 # on reste appuyer sur ctrl on prend le noeud AnimatedSprite2D  puis le relache et ca donne la ligne ci dessus
 # elle permet de lier le noeud AnimatedSprite2D a l action qu on va decrire sur le script  
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-
 func _physics_process(delta: float) -> void:
+# il faut garder la function commun utiliser par tous comme gravite qui est une action commune à tous les etats 
+	gravite(delta)
+	
+# c est comme switch 
+	match current_state:
+		State.STATE_RUNNING:
+			run()
+		State.STATE_JUMPING:
+			jump()	
+		State.STATE_FALLING:
+			fall()	
+		State.STATE_ATTACKING:
+			attack()
+				
+	move_and_slide()
+func gravite(delta:float) -> void:
 	# si on est en l’air on ajoute un peu de vitesse vers le bas à chaque image 
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-	# au moment où on appuie sur jump et si on est au sol la vitesse verticale devient d’un coup −300 (vers le haut)
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+func run() -> void:
+	animated_sprite_2d.play("run")	# animation
+	velocity.x=SPEED #mouvement 
+	if Input.is_action_just_pressed("jump") && is_on_floor() : # transition
+		velocity.y = JUMP_VELOCITY   # car il faut sauter une fois quand je mets sur jump je saute plusieurs fois
+		current_state = State.STATE_JUMPING # partir a l etat sauter 
+	elif Input.is_action_just_pressed("attack"): # transition 
+		current_state = State.STATE_ATTACKING # tout ce qui concerne l attaque est dans attack()
+	elif not is_on_floor():
+		current_state = State.STATE_FALLING	
 
-	# Get the input direction and handle the movement/deceleration.
-	# Si une touche est pressée n importe gauche ou droite , on avance à SPEED dans cette direction
-	# Sinon(else) on  ramène la vitesse vers 0 donc il freine.
-	var direction := Input.get_axis("ui_left", "ui_right")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		
-	if munitions > 0 && Input.is_action_just_pressed("attack"):
-		munitions-=1
-		
-		
-	
-	animation()
-	move_and_slide()
-	# a refaire cette partie: si on est immobile et au sol alors joue l animation run
-	# si non si on est au ciel et et pas sol alors joue l animation jump 
-func animation():
-	if 	velocity.y==0 && is_on_floor():
-		animated_sprite_2d.play("run")
-	elif velocity.y<0 && not is_on_floor():
-		animated_sprite_2d.play("jump")
-	elif velocity.y>0 && not is_on_floor():
-		animated_sprite_2d.play("fall")
+func jump() -> void:
+	animated_sprite_2d.play("jump") 
+	velocity.x=SPEED
+	if velocity.y>=0 :
+		current_state = State.STATE_FALLING	
+					
+func fall() -> void:
+	animated_sprite_2d.play("fall")# grace à la gravite ca descend sans probleme pas besoin de autre chose
+	velocity.x=SPEED 
+	if is_on_floor():
+		current_state = State.STATE_RUNNING
+
+func attack() -> void:
+	velocity.x = SPEED # il continue de courir pendant l'attaque
+	if not attaque_commencee: # 1re image de l attaque : se fait UNE seule fois
+		if munitions > 0:
+			munitions -= 1
+			print(munitions)
+			animated_sprite_2d.play("attack") # lancee UNE fois sinon elle recommence a chaque image
+			attaque_commencee = true
+		else:
+			current_state = State.STATE_RUNNING # plus de munitions : il continue de courir
+	elif not animated_sprite_2d.is_playing(): # images suivantes : l animation est finie ?
+		attaque_commencee = false # pret pour la prochaine attaque
+		current_state = State.STATE_RUNNING

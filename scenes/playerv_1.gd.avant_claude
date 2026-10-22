@@ -1,0 +1,64 @@
+extends CharacterBody2D # c est un heritage et non une bibliotheque 
+
+const SPEED = 200.0
+const JUMP_VELOCITY = -300.0
+var munitions = 3
+
+enum State { STATE_JUMPING, STATE_ATTACKING, STATE_RUNNING, STATE_FALLING  } # la liste des etats 
+
+var current_state : State = State.STATE_RUNNING # au début il court modele temple run 
+
+# on reste appuyer sur ctrl on prend le noeud AnimatedSprite2D  puis le relache et ca donne la ligne ci dessus
+# elle permet de lier le noeud AnimatedSprite2D a l action qu on va decrire sur le script  
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+func _physics_process(delta: float) -> void:
+# il faut garder la function commun utiliser par tous comme gravite qui est une action commune à tous les etats 
+	gravite(delta)
+	
+# c est comme switch 
+	match current_state:
+		State.STATE_RUNNING:
+			run()
+		State.STATE_JUMPING:
+			jump()	
+		State.STATE_FALLING:
+			fall()	
+		State.STATE_ATTACKING:
+			attack()
+				
+	move_and_slide()
+func gravite(delta:float) -> void:
+	# si on est en l’air on ajoute un peu de vitesse vers le bas à chaque image 
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+func run() -> void:
+	animated_sprite_2d.play("run")	# animation
+	velocity.x=SPEED #mouvement 
+	if Input.is_action_just_pressed("jump") && is_on_floor() : # transition
+		velocity.y = JUMP_VELOCITY   # car il faut sauter une fois quand je mets sur jump je saute plusieurs fois 
+		current_state = State.STATE_JUMPING # partir a l etat sauter 
+	elif Input.is_action_just_pressed("attack"): # transition 
+		if munitions > 0:   # un seul fois pas plusieurs fois 
+			munitions -= 1
+			print(munitions)
+		current_state = State.STATE_ATTACKING
+	elif not is_on_floor():
+		current_state = State.STATE_FALLING	
+
+func jump() -> void:
+	animated_sprite_2d.play("jump") 
+	if velocity.y>=0 :
+		current_state = State.STATE_FALLING	
+					
+func fall() -> void:
+	animated_sprite_2d.play("fall")# grace à la gravite ca descend sans probleme pas besoin de autre chose 
+	if is_on_floor():
+		current_state = State.STATE_RUNNING
+
+func attack() -> void:
+	velocity.x = SPEED# il continue de courir pendant l'attaque
+	animated_sprite_2d.play("attack")       # lancée UNE fois
+	if not animated_sprite_2d.is_playing():       # images suivantes : l'animation est finie ?
+		current_state = State.STATE_RUNNING
+		
