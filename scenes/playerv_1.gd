@@ -24,15 +24,20 @@ func _physics_process(delta: float) -> void:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
+		
 	if munitions > 0 && Input.is_action_just_pressed("attack"):
 		munitions-=1
-
+		
+		
+	
 	animation()
 	move_and_slide()
 	# a refaire cette partie: si on est immobile et au sol alors joue l animation run
 	# si non si on est au ciel et et pas sol alors joue l animation jump 
 func animation():
-	if velocity==Vector2.ZERO && is_on_floor():
+	if 	velocity.y==0 && is_on_floor():
 		animated_sprite_2d.play("run")
-	elif velocity.y!=0 && not is_on_floor():
+	elif velocity.y<0 && not is_on_floor():
 		animated_sprite_2d.play("jump")
+	elif velocity.y>0 && not is_on_floor():
+		animated_sprite_2d.play("fall")
