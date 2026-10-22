@@ -314,12 +314,15 @@ script = ExtResource("1_3kyl8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1507583745]
 sprite_frames = SubResource("SpriteFrames_3vefv")
-animation = &"run"
+animation = &"attack"
 autoplay = "run"
+frame = 5
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1481211670]
 position = Vector2(-9, 3)
 shape = SubResource("CapsuleShape2D_7rm7n")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1693478382]
+zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
