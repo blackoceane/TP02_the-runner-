@@ -183,7 +183,7 @@ centered = false
 [node name="Mer" type="Parallax2D" parent="." unique_id=478681432]
 
 [node name="iles" type="Parallax2D" parent="." unique_id=1166444912]
-scroll_scale = Vector2(0.5, 0.5)
+scroll_scale = Vector2(0.3, 0.3)
 scroll_offset = Vector2(-10, 0)
 repeat_size = Vector2(420, 0)
 
