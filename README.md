@@ -13,18 +13,29 @@ Le personnage court tout seul vers la droite. Le joueur doit sauter par-dessus l
 
 Les touches sont définies dans l'**Input Map** (Projet > Paramètres du projet > Contrôles).
 
-## Machine à états
+## Machine à états (patron de conception État)
 
-Le joueur est contrôlé par une machine à états finis (`enum State` + `match` dans `scenes/playerv_1.gd`).
+Le joueur est contrôlé par une machine à états finis construite avec le **patron de conception État** (cours 08) :
+
+```
+Playerv1 (CharacterBody2D)      (contexte : gravité + move_and_slide)
+└── StateMachine (Node)         (scripts/states/state_machine.gd : garde l'état actif)
+    ├── Run     (player_run.gd)
+    ├── Jump    (player_jump.gd)
+    ├── Fall    (player_fall.gd)
+    └── Attack  (player_attack.gd)
+```
+
+Chaque état hérite de `BaseState` (`scripts/states/base_state.gd`) et a ses fonctions `enter()` (une fois en entrant), `physics_update()` (à chaque image) et `exit()`. Un état demande un changement avec le signal `Transitioned`.
 
 | État | Ce qu'il fait | Transitions |
 |---|---|---|
-| RUN | court tout seul, animation `run` | jump → JUMP, attack → ATTACK, plus de sol → FALL |
-| JUMP | monte, animation `jump` | au sommet (`velocity.y >= 0`) → FALL |
-| FALL | descend, animation `fall` | touche le sol → RUN |
-| ATTACK | lance un objet (−1 munition), animation `attack` | animation terminée ou plus de munitions → RUN |
+| Run | court tout seul, animation `run` | jump (au sol) → Jump, attack (s'il reste des munitions) → Attack, plus de sol → Fall |
+| Jump | `enter()` : poussée du saut ; monte, animation `jump` | au sommet (`velocity.y >= 0`) → Fall |
+| Fall | descend, animation `fall` | touche le sol → Run |
+| Attack | `enter()` : −1 munition et animation `attack` | animation terminée → Run |
 
-Il n'y a pas d'état IDLE : comme dans un runner, le personnage ne s'arrête jamais.
+Il n'y a pas d'état Idle : comme dans un runner, le personnage ne s'arrête jamais.
 
 ## Animations
 
@@ -37,7 +48,8 @@ Décor en couches avec des nœuds `Parallax2D` : ciel (immobile), nuages (lents 
 ## Structure
 
 - `scenes/world.tscn` : le niveau (parallaxe, sol en TileMapLayer, joueur)
-- `scenes/playerv_1.tscn` / `scenes/playerv_1.gd` : le joueur et sa machine à états
+- `scenes/playerv_1.tscn` / `scenes/playerv_1.gd` : le joueur (contexte)
+- `scripts/states/` : la machine à états et les 4 états
 - `art/` et `assets/` : images
 
 ## Crédits

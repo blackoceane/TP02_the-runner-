@@ -1,5 +1,10 @@
 [gd_scene format=3 uid="uid://busf84d8ogf5g"]
 
+[ext_resource type="Script" path="res://scripts/states/state_machine.gd" id="sm_1"]
+[ext_resource type="Script" path="res://scripts/states/player_run.gd" id="st_run"]
+[ext_resource type="Script" path="res://scripts/states/player_jump.gd" id="st_jump"]
+[ext_resource type="Script" path="res://scripts/states/player_fall.gd" id="st_fall"]
+[ext_resource type="Script" path="res://scripts/states/player_attack.gd" id="st_attack"]
 [ext_resource type="Script" uid="uid://bwevowrppt4i2" path="res://scenes/playerv_1.gd" id="1_3kyl8"]
 [ext_resource type="Texture2D" uid="uid://bepk1yq31dvtx" path="res://art/3 SteamMan/SteamMan_death.png" id="2_7sbht"]
 [ext_resource type="Texture2D" uid="uid://711sssb0mm3r" path="res://art/3 SteamMan/SteamMan_jump.png" id="3_u8use"]
@@ -326,3 +331,24 @@ shape = SubResource("CapsuleShape2D_7rm7n")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1693478382]
 zoom = Vector2(1.5, 1.5)
 position_smoothing_enabled = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+process_physics_priority = -1
+script = ExtResource("sm_1")
+initial_state = NodePath("Run")
+
+[node name="Run" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("st_run")
+player = NodePath("../..")
+
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("st_jump")
+player = NodePath("../..")
+
+[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("st_fall")
+player = NodePath("../..")
+
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("st_attack")
+player = NodePath("../..")

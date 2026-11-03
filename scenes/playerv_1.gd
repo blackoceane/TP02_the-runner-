@@ -1,71 +1,24 @@
-extends CharacterBody2D # c est un heritage et non une bibliotheque 
+# Joueur (la classe « contexte » du patron de conception État)
+# Il ne contient plus la logique des états : chaque état est un nœud enfant de StateMachine
+# (Run, Jump, Fall, Attack), avec son propre script dans scripts/states/.
+class_name Player # (permet aux états d'écrire « @export var player : Player »)
+extends CharacterBody2D # (c'est un héritage et non une bibliothèque)
 
-const SPEED = 100.0
-const JUMP_VELOCITY = -400.0
-var munitions = 3
-var attaque_commencee = false # vrai pendant qu une attaque est en cours
+const SPEED = 100.0 # (vitesse de course)
+const JUMP_VELOCITY = -400.0 # (négatif = vers le haut ; environ 82 px de haut)
+var munitions = 3 # (nombre d'objets à lancer ; utilisé par les états Run et Attack)
 
-enum State { STATE_JUMPING, STATE_ATTACKING, STATE_RUNNING, STATE_FALLING  } # la liste des etats 
-
-var current_state : State = State.STATE_RUNNING # au début il court modele temple run 
-
-# on reste appuyer sur ctrl on prend le noeud AnimatedSprite2D  puis le relache et ca donne la ligne ci dessus
-# elle permet de lier le noeud AnimatedSprite2D a l action qu on va decrire sur le script  
+# (on reste appuyé sur Ctrl, on prend le nœud AnimatedSprite2D, puis on le relâche : ça donne la ligne ci-dessous)
+# (elle lie le nœud AnimatedSprite2D au script : c'est la « télécommande » des animations, utilisée par les états)
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
 func _physics_process(delta: float) -> void:
-# il faut garder la function commun utiliser par tous comme gravite qui est une action commune à tous les etats 
+	# (ici seulement ce qui est COMMUN à tous les états)
+	# (la StateMachine s'exécute AVANT ce code grâce à sa priorité -1 : l'état actif a déjà choisi la vitesse)
 	gravite(delta)
-	
-# c est comme switch 
-	match current_state:
-		State.STATE_RUNNING:
-			run()
-		State.STATE_JUMPING:
-			jump()	
-		State.STATE_FALLING:
-			fall()	
-		State.STATE_ATTACKING:
-			attack()
-				
-	move_and_slide()
-func gravite(delta:float) -> void:
-	# si on est en l’air on ajoute un peu de vitesse vers le bas à chaque image 
+	move_and_slide() # (déplace vraiment le joueur avec velocity)
+
+func gravite(delta: float) -> void:
+	# (si on est en l'air, on ajoute un peu de vitesse vers le bas à chaque image)
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
-func run() -> void:
-	animated_sprite_2d.play("run")	# animation
-	velocity.x=SPEED #mouvement 
-	if Input.is_action_just_pressed("jump") && is_on_floor() : # transition
-		velocity.y = JUMP_VELOCITY   # car il faut sauter une fois quand je mets sur jump je saute plusieurs fois
-		current_state = State.STATE_JUMPING # partir a l etat sauter 
-	elif Input.is_action_just_pressed("attack"): # transition 
-		current_state = State.STATE_ATTACKING # tout ce qui concerne l attaque est dans attack()
-	elif not is_on_floor():
-		current_state = State.STATE_FALLING	
-
-func jump() -> void:
-	animated_sprite_2d.play("jump") 
-	velocity.x=SPEED
-	if velocity.y>=0 :
-		current_state = State.STATE_FALLING	
-					
-func fall() -> void:
-	animated_sprite_2d.play("fall")# grace à la gravite ca descend sans probleme pas besoin de autre chose
-	velocity.x=SPEED 
-	if is_on_floor():
-		current_state = State.STATE_RUNNING
-
-func attack() -> void:
-	velocity.x = SPEED # il continue de courir pendant l'attaque
-	if not attaque_commencee: # 1re image de l attaque : se fait UNE seule fois
-		if munitions > 0:
-			munitions -= 1
-			print(munitions)
-			animated_sprite_2d.play("attack") # lancee UNE fois sinon elle recommence a chaque image
-			attaque_commencee = true
-		else:
-			current_state = State.STATE_RUNNING # plus de munitions : il continue de courir
-	elif not animated_sprite_2d.is_playing(): # images suivantes : l animation est finie ?
-		attaque_commencee = false # pret pour la prochaine attaque
-		current_state = State.STATE_RUNNING
